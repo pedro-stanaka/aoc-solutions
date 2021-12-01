@@ -8,7 +8,7 @@ RuboCop::RakeTask.new(:lint) do |task|
 end
 
 task :run do
-  ruby 'lib/cool_program.rb'
+  ruby 'lib/day_01.rb'
 end
 
 task :test do
