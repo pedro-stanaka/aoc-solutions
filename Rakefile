@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'rubocop/rake_task'
+
+Dir.glob('lib/**/*.rb').each { |r| require "#{__dir__}/#{r}" }
 
 task default: %w[lint test]
 
 RuboCop::RakeTask.new(:lint) do |task|
-  task.patterns = ['lib/**/*.rb', 'test/**/*.rb']
+  task.patterns = %w[lib/**/*.rb test/**/*.rb]
   task.fail_on_error = false
 end
 
@@ -13,4 +17,10 @@ end
 
 task :test do
   ruby 'test/cool_program_test.rb'
+end
+
+task :day01 do
+  result = DayOne.new("#{__dir__}/inputs/day01.txt").run
+
+  puts "Answer is: #{result}"
 end

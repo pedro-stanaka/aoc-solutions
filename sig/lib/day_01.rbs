@@ -1,0 +1,10 @@
+# The coolest program
+class DayOne
+  attr_reader file_name: String
+
+  def initialize: (String file_name) -> void
+
+  def run: () -> Integer
+
+  def count_increasing: (Array[String] depth_list) -> Integer
+end
