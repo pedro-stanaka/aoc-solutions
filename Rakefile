@@ -31,3 +31,9 @@ task :day01_pt2 do
 
   puts "Answer is: #{result}"
 end
+
+task :day02 do
+  result = DayTwo::Solution.new("#{__dir__}/inputs/day02.txt").run
+
+  puts "Answer is: #{result}"
+end
