@@ -10,6 +10,6 @@ class Day01Test < Minitest::Test
   end
 
   def test_part2
-    assert_equal 5, DayOne.new("#{__dir__}/fixtures/day01.txt").run_part_two
+    assert_equal({ depth: 60, horizon: 15, aim: 10 }, DayTwo::Solution.new("#{__dir__}/fixtures/day02.txt").run_part_two)
   end
 end
