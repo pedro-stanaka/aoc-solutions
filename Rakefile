@@ -43,3 +43,9 @@ task :day02_pt2 do
 
   puts "Result is #{coords[:depth] * coords[:horizon]}"
 end
+
+task :day03 do
+  rates = DayThree.new("#{__dir__}/inputs/day03.txt").run
+
+  puts "Result is #{rates[:gamma] * rates[:epsilon]}"
+end
