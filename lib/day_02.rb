@@ -71,4 +71,3 @@ module DayTwo
     end
   end
 end
-

@@ -31,4 +31,3 @@ class DayOne
     increase_count
   end
 end
-
