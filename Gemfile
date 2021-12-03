@@ -2,8 +2,6 @@
 
 source 'https://rubygems.org'
 
-ruby '3.0.3'
-
 gem 'rake'
 gem 'rbs', '~> 1.4'
 gem 'values', '~>1.8'
