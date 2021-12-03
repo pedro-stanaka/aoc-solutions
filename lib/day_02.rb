@@ -18,9 +18,6 @@ module DayTwo
         coords = parse_command(command, coords)
       end
 
-      puts "Final coords are: #{coords}"
-      puts "Result is #{coords[:depth] * coords[:horizon]}"
-
       coords
     end
 
