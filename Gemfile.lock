@@ -24,6 +24,7 @@ GEM
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     unicode-display_width (2.1.0)
+    values (1.8.0)
 
 PLATFORMS
   ruby
@@ -33,6 +34,7 @@ DEPENDENCIES
   rake
   rbs (~> 1.4)
   rubocop (~> 1.23)
+  values (~> 1.8)
 
 RUBY VERSION
    ruby 3.0.3p157

@@ -1,0 +1,4 @@
+#  FileReader provides file reading capabilities to a class/module.
+module FileReader
+  def read_file: (String file_name) -> Array[String]
+end

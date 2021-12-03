@@ -31,3 +31,15 @@ task :day01_pt2 do
 
   puts "Answer is: #{result}"
 end
+
+task :day02 do
+  coords = DayTwo::Solution.new("#{__dir__}/inputs/day02.txt").run
+
+  puts "Result is #{coords[:depth] * coords[:horizon]}"
+end
+
+task :day02_pt2 do
+  coords = DayTwo::Solution.new("#{__dir__}/inputs/day02.txt").run_part_two
+
+  puts "Result is #{coords[:depth] * coords[:horizon]}"
+end

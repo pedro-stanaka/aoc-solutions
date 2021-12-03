@@ -1,0 +1,15 @@
+module DayTwo
+
+  #  DayTwo solution for AoC
+  class Solution
+    include FileReader
+
+    def initialize: (String file_name) -> void
+
+    def run: () -> untyped
+
+    private
+
+    def parse_command: (string command, {horizon: Integer, depth: Integer} coords) -> {horizon: Integer, depth: Integer}
+  end
+end
