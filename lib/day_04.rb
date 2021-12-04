@@ -33,14 +33,12 @@ class DayFour
       end
       winner = check_winner(scores)
       last_number = n
-      puts last_number
-      puts boards[68].inspect
       break unless winner.nil?
     end
 
     unless winner.nil?
       sum = boards[winner].sum
-      puts boards.size
+      puts "Winner index #{winner}"
       puts "Last number #{last_number}"
       puts "Sum is: #{sum}"
       puts "The result is #{sum * last_number}"
@@ -55,8 +53,22 @@ class DayFour
     winner = nil
     scores.each_with_index do |s, i|
       s.row_vectors.each do |row|
-        winner = i if row.sum == ROW_SIZE
+        if row.sum == ROW_SIZE
+          winner = i
+          break
+        end
+        break unless winner.nil?
       end
+
+      s.column_vectors.each do |col|
+        if col.sum == ROW_SIZE
+          winner = i
+          break
+        end
+        break unless winner.nil?
+      end
+
+      break unless winner.nil?
     end
 
     winner
