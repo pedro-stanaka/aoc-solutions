@@ -55,3 +55,15 @@ task :day03_pt2 do
 
   puts "Result is #{rates[:oxygen] * rates[:co2]}"
 end
+
+task :day05 do
+  intersection_count = DayFive.new("#{__dir__}/inputs/day05.txt").run
+
+  puts "Number of intersections with two or more lines: #{intersection_count}"
+end
+
+task :day05_pt2 do
+  intersection_count = DayFive.new("#{__dir__}/inputs/day05.txt").run(diagonal: true)
+
+  puts "Number of intersections with two or more lines: #{intersection_count}"
+end
