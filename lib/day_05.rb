@@ -31,7 +31,6 @@ class DayFive
       x2, y2 = c2.split(',')
       endl = Coord.new(x2.to_i, y2.to_i)
 
-
       if lines_are_horizontal(start, endl)
         @plane = put_horizontal_lines_on_plane(start, endl)
       elsif diagonal && lines_are_diagonal(start, endl)
@@ -41,7 +40,8 @@ class DayFive
 
     cnt = 0
     plane.each { |n| cnt += 1 if n >= 2 }
-    puts "Count: #{cnt}"
+
+    cnt
   end
 
   private
@@ -78,17 +78,23 @@ class DayFive
     minx, maxx = [start.x, endl.x].minmax
     miny, maxy = [start.y, endl.y].minmax
 
-    if get_line_theta(start, endl).positive? # downward diagonal
-      (minx..maxx).each do |x|
-        plane[miny, x] += 1
-        miny += 1
-      end
+    if get_line_theta(start, endl).positive?
+      update_downward_diagonal(Coord.new(minx, miny), maxx)
       return
     end
 
-    (minx..maxx).each do |x| # upward diagonal
+    # upward diagonal
+    (minx..maxx).each do |x|
       plane[maxy, x] += 1
       maxy -= 1
+    end
+  end
+
+  def update_downward_diagonal(start, max_x)
+    min_y = start.y
+    (start.x..max_x).each do |x|
+      plane[min_y, x] += 1
+      min_y += 1
     end
   end
 

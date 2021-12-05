@@ -57,9 +57,13 @@ task :day03_pt2 do
 end
 
 task :day05 do
-  DayFive.new("#{__dir__}/inputs/day05.txt").run
+  intersection_count = DayFive.new("#{__dir__}/inputs/day05.txt").run
+
+  puts "Number of intersections with two or more lines: #{intersection_count}"
 end
 
 task :day05_pt2 do
-  DayFive.new("#{__dir__}/inputs/day05.txt").run(diagonal: true)
+  intersection_count = DayFive.new("#{__dir__}/inputs/day05.txt").run(diagonal: true)
+
+  puts "Number of intersections with two or more lines: #{intersection_count}"
 end
