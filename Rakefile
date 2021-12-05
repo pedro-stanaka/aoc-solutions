@@ -55,3 +55,7 @@ task :day03_pt2 do
 
   puts "Result is #{rates[:oxygen] * rates[:co2]}"
 end
+
+task :day05 do
+  DayFive.new("#{__dir__}/inputs/day05.txt").run
+end
