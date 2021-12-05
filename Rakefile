@@ -59,3 +59,7 @@ end
 task :day05 do
   DayFive.new("#{__dir__}/inputs/day05.txt").run
 end
+
+task :day05_pt2 do
+  DayFive.new("#{__dir__}/inputs/day05.txt").run(diagonal: true)
+end
