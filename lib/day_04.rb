@@ -1,50 +1,60 @@
 class DayFour
-  attr_reader :file_name
+  attr_reader :file_name, :previous_winners
 
   ROW_SIZE = 5
 
   def initialize(file_name)
     @file_name = file_name
+    @previous_winners = []
   end
 
   def run
-    numbers_string, rest = File.open(file_name) do |f|
-      drawn_numbers = f.readline(chomp: true)
+    drawn_numbers, boards = File.open(file_name) do |f|
+      drawn_numbers = f.readline(chomp: true).split(',').map(&:to_i)
       f.readline # discard empty line
       rest = f.readlines(chomp: true)
 
-      [drawn_numbers, rest]
+      [drawn_numbers, build_boards(rest)]
     end
 
-    drawn_numbers = numbers_string.split(',').map(&:to_i)
-    puts drawn_numbers.inspect
-    boards = build_boards(rest)
     scores = boards.size.times.map { Matrix.zero(ROW_SIZE) }
 
-    winner = nil
-    last_number = nil
+    last_winning_number = nil
+    last_winner = nil
+    last_board_state = nil
     drawn_numbers.each do |n|
       boards.each_with_index do |b, i|
         next unless b.include? n
 
+        puts "Number: #{n} - Board ##{i}"
+        puts b.inspect
         r, c = b.index(n)
         b[r, c] = 0
         scores[i][r, c] = 1
+        puts b.inspect
       end
+      puts "---- #{scores.size}"
       winner = check_winner(scores)
       last_number = n
-      break unless winner.nil?
+      unless winner.nil?
+        last_winning_number = last_number
+        until winner.nil?
+          puts winner
+          last_board_state = boards[winner].clone
+          boards.delete_at(winner)
+          scores.delete_at(winner)
+          winner = check_winner(scores)
+        end
+      end
+      winner = nil
     end
 
-    unless winner.nil?
-      sum = boards[winner].sum
-      puts "Winner index #{winner}"
-      puts "Last number #{last_number}"
-      puts "Sum is: #{sum}"
-      puts "The result is #{sum * last_number}"
+    unless last_board_state.nil?
+      sum = last_board_state.sum
+      puts "Winner index #{last_winner}"
+      puts "Last number #{last_winning_number}"
+      puts "The result is #{sum * last_winning_number}"
     end
-
-    puts "end"
   end
 
   private
