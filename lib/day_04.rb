@@ -1,14 +1,77 @@
+# frozen_string_literal: true
+
+## Day 04 Solution
 class DayFour
-  attr_reader :file_name, :previous_winners
+  attr_reader :file_name, :boards, :scores
 
   ROW_SIZE = 5
 
   def initialize(file_name)
     @file_name = file_name
-    @previous_winners = []
+  end
+
+  def run_pt2
+    @boards, drawn_numbers = draw_numbers_and_boards
+
+    @scores = boards.size.times.map { Matrix.zero(ROW_SIZE) }
+
+    last_winning_number = nil
+    last_board_state = nil
+    drawn_numbers.each do |n|
+      mark_number_in_boards(n)
+
+      winner = check_winner(scores)
+      next if winner.nil?
+
+      last_winning_number = n
+      until winner.nil?
+        last_board_state = boards[winner].clone
+        boards.delete_at(winner)
+        scores.delete_at(winner)
+        winner = check_winner(scores)
+      end
+    end
+
+    return if last_board_state.nil?
+
+    sum = last_board_state.sum
+    puts "The result is #{sum * last_winning_number}"
   end
 
   def run
+    boards, drawn_numbers = draw_numbers_and_boards
+
+    scores = boards.size.times.map { Matrix.zero(ROW_SIZE) }
+
+    last_number = nil
+    winner = nil
+
+    drawn_numbers.each do |n|
+      mark_number_in_boards(n)
+      winner = check_winner(scores)
+      last_number = n
+      break unless winner.nil?
+    end
+
+    return if winner.nil?
+
+    sum = boards[winner].sum
+    puts "The result is #{sum * last_number}"
+  end
+
+  private
+
+  def mark_number_in_boards(n)
+    boards.each_with_index do |b, i|
+      next unless b.include? n
+
+      r, c = b.index(n)
+      b[r, c] = 0
+      scores[i][r, c] = 1
+    end
+  end
+
+  def draw_numbers_and_boards
     drawn_numbers, boards = File.open(file_name) do |f|
       drawn_numbers = f.readline(chomp: true).split(',').map(&:to_i)
       f.readline # discard empty line
@@ -17,47 +80,8 @@ class DayFour
       [drawn_numbers, build_boards(rest)]
     end
 
-    scores = boards.size.times.map { Matrix.zero(ROW_SIZE) }
-
-    last_winning_number = nil
-    last_winner = nil
-    last_board_state = nil
-    drawn_numbers.each do |n|
-      boards.each_with_index do |b, i|
-        next unless b.include? n
-
-        puts "Number: #{n} - Board ##{i}"
-        puts b.inspect
-        r, c = b.index(n)
-        b[r, c] = 0
-        scores[i][r, c] = 1
-        puts b.inspect
-      end
-      puts "---- #{scores.size}"
-      winner = check_winner(scores)
-      last_number = n
-      unless winner.nil?
-        last_winning_number = last_number
-        until winner.nil?
-          puts winner
-          last_board_state = boards[winner].clone
-          boards.delete_at(winner)
-          scores.delete_at(winner)
-          winner = check_winner(scores)
-        end
-      end
-      winner = nil
-    end
-
-    unless last_board_state.nil?
-      sum = last_board_state.sum
-      puts "Winner index #{last_winner}"
-      puts "Last number #{last_winning_number}"
-      puts "The result is #{sum * last_winning_number}"
-    end
+    [boards, drawn_numbers]
   end
-
-  private
 
   def check_winner(scores)
     winner = nil
@@ -89,14 +113,14 @@ class DayFour
     board = []
 
     rest.each_with_index do |l, i|
-      board.append(l.split.map(&:to_i)) if l != ""
+      board.append(l.split.map(&:to_i)) if l != ''
 
-      if l == "" || i == rest.size - 1
-        boards.append(board)
-        board = []
-        next
-      end
+      next unless l == '' || i == rest.size - 1
+
+      boards.append(board)
+      board = []
     end
+
     boards.map { |b| Matrix.rows(b) }
   end
 end
