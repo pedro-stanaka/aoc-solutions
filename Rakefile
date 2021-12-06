@@ -73,7 +73,14 @@ task :day05_pt2 do
 end
 
 task :day06 do
-  fish_school = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 256)
+  result = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 80)
 
-  puts "Number of fish after 80 days: #{fish_school.size}"
+  puts "Number of fish after 80 days: #{result}"
+end
+
+
+task :day06_pt2 do
+  result = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 256)
+
+  puts "Number of fish after 256 days: #{result}"
 end
