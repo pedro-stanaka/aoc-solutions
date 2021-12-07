@@ -84,3 +84,8 @@ task :day06_pt2 do
 
   puts "Number of fish after 256 days: #{result}"
 end
+
+task :day07 do
+  result = DaySeven.new("#{__dir__}/inputs/day07.txt").run
+  puts "Number of fish after 256 days: #{result}"
+end
