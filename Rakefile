@@ -71,3 +71,16 @@ task :day05_pt2 do
 
   puts "Number of intersections with two or more lines: #{intersection_count}"
 end
+
+task :day06 do
+  result = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 80)
+
+  puts "Number of fish after 80 days: #{result}"
+end
+
+
+task :day06_pt2 do
+  result = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 256)
+
+  puts "Number of fish after 256 days: #{result}"
+end
