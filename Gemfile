@@ -2,9 +2,9 @@
 
 source 'https://rubygems.org'
 
+gem 'daru', '~> 0.3'
 gem 'rake'
 gem 'rbs', '~> 1.4'
-gem 'values', '~>1.8'
 
 group :test do
   gem 'minitest', '~> 5.14'
