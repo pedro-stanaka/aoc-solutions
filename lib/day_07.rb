@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'daru'
-
 # Day Six solution improved!
 class DaySeven
   attr_reader :filename

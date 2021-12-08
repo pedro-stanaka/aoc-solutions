@@ -93,3 +93,8 @@ task :day07_pt2 do
   result = DaySeven.new("#{__dir__}/inputs/day07.txt").run_pt2
   puts "Minimum amount of fuel: #{result}"
 end
+
+task :day08 do
+  result = DayEight.new("#{__dir__}/inputs/day08.txt").run
+  puts "Count of 1,4,7 and 8s in the outputs: #{result}"
+end
