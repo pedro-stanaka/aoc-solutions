@@ -78,7 +78,6 @@ task :day06 do
   puts "Number of fish after 80 days: #{result}"
 end
 
-
 task :day06_pt2 do
   result = DaySix.new("#{__dir__}/inputs/day06.txt").run(days: 256)
 
@@ -87,5 +86,10 @@ end
 
 task :day07 do
   result = DaySeven.new("#{__dir__}/inputs/day07.txt").run
-  puts "Number of fish after 256 days: #{result}"
+  puts "Minimum amount of fuel: #{result}"
+end
+
+task :day07_pt2 do
+  result = DaySeven.new("#{__dir__}/inputs/day07.txt").run_pt2
+  puts "Minimum amount of fuel: #{result}"
 end
