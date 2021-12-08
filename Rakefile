@@ -98,3 +98,8 @@ task :day08 do
   result = DayEight.new("#{__dir__}/inputs/day08.txt").run
   puts "Count of 1,4,7 and 8s in the outputs: #{result}"
 end
+
+task :day08_pt2 do
+  result = DayEight.new("#{__dir__}/inputs/day08.txt").run_pt2
+  puts "Sum of outputs: #{result}"
+end
