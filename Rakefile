@@ -103,3 +103,13 @@ task :day08_pt2 do
   result = DayEight.new("#{__dir__}/inputs/day08.txt").run_pt2
   puts "Sum of outputs: #{result}"
 end
+
+task :day09 do
+  result = DayNine.new("#{__dir__}/inputs/day09.txt").run
+  puts "Count of 1,4,7 and 8s in the outputs: #{result}"
+end
+
+task :day09_pt2 do
+  result = DayNine.new("#{__dir__}/inputs/day09.txt").run_pt2
+  puts "Basin sizes multiplication: #{result}"
+end
