@@ -2,6 +2,7 @@
 
 require_relative 'ioutil/file_reader'
 require 'matrix'
+require 'set'
 
 # Day Six solution improved!
 class DayNine
@@ -16,31 +17,57 @@ class DayNine
   end
 
   def run
+    low_points.map { |(r, c)| floor_map[r, c] + 1 }.sum
+  end
+
+  def run_pt2
+    basin_sizes = low_points.map do |(y, x)|
+      basin = create_basin(y, x)
+      basin.size
+    end
+
+    top_three_basins = basin_sizes.sort.reverse[0..2]
+
+    top_three_basins.reduce(&:*)
+  end
+
+  private
+
+  def low_points
     low_points = []
     (0..floor_map.row_size - 1).each do |r|
       (0..floor_map.column_size - 1).each do |c|
-        low_points.push(floor_map[r, c]) if low_point?(r, c)
+        low_points.push([r, c]) if low_point?(r, c)
       end
     end
-
-    low_points.map { |p| p + 1 }.sum
+    low_points
   end
 
-  def run_pt2; end
+  def create_basin(row, col, basin = Set[])
+    basin.add([row, col])
 
-  private
+    [[row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1]].each do |(yd, xd)|
+      basin.merge(create_basin(yd, xd, basin)) if highest_point(yd, xd) && !basin.include?([yd, xd])
+    end
+
+    basin
+  end
+
+  def highest_point(row, col)
+    return false if row.negative? || col.negative?
+
+    floor_map[row, col].nil? ? false : floor_map[row, col] < 9
+  end
 
   def build_adjacency_for(row, col)
     adjacency_list = []
 
     # top - have to take care of negative index which will work on ruby,
     # but have negative side effect
-    top_r = (row - 1).negative? ? nil : row - 1
-    adjacency_list.push(floor_map[top_r, col]) unless top_r.nil?
+    adjacency_list.push(floor_map[row - 1, col]) unless (row - 1).negative?
 
     # left
-    left_c = (col - 1).negative? ? nil : col - 1
-    adjacency_list.push(floor_map[row, left_c]) unless left_c.nil?
+    adjacency_list.push(floor_map[row, col - 1]) unless (col - 1).negative?
 
     # bottom - relying on old good nil, which we filter later.
     adjacency_list.push(floor_map[row + 1, col])
