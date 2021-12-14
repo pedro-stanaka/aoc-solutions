@@ -122,6 +122,6 @@ end
 
 task :day10_pt2 do |task_name|
   day_name = task_name.to_s.split('_').first
-  result = DayTen.new("#{__dir__}/inputs/#{day_name}.txt").run
+  result = DayTen.new("#{__dir__}/inputs/#{day_name}.txt").run_pt2
   puts "Score for input is: #{result}"
 end
