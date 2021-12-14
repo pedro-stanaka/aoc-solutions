@@ -52,19 +52,10 @@ class DayTen
       parser_stack = []
 
       line.split('').each do |char|
-        case char
-        when L_BRACKET, L_SQR_BRACKET, L_CHEVRON, L_PARENS
+        if OPEN_CHARS.include? char
           parser_stack.push(char)
-        when R_SQR_BRACKET
-          score += SCORE_MAP[R_SQR_BRACKET] if parser_stack.pop != L_SQR_BRACKET
-        when R_CHEVRON
-          score += SCORE_MAP[R_CHEVRON] if parser_stack.pop != L_CHEVRON
-        when R_PARENS
-          score += SCORE_MAP[R_PARENS] if parser_stack.pop != L_PARENS
-        when R_BRACKET
-          score += SCORE_MAP[R_BRACKET] if parser_stack.pop != L_BRACKET
-        else
-          raise "Unknown char: #{char}"
+        elsif MATCHING_PAIRS[char] != parser_stack.pop
+          score += ERROR_SCORE_MAP[char]
         end
       end
     end
