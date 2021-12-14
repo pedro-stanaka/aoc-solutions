@@ -65,26 +65,8 @@ class DayTen
     score_list = []
 
     read_file(file_name).each do |line|
-      corrupted_line = false
-
-      line_stack = []
-      line.each_char do |c|
-        break if corrupted_line
-
-        if OPEN_CHARS.include? c
-          line_stack.push c
-          # puts "enqueued #{c}"
-        elsif line_stack.last == MATCHING_PAIRS[c]
-          line_stack.pop
-        else
-          corrupted_line = true
-          next
-        end
-      end
-
-      puts "done processing line. corrupted = #{corrupted_line.inspect}"
-
-      next if corrupted_line
+      line_stack, corrupted = line_stack(line)
+      next if corrupted
 
       line_score = line_stack.reverse.inject(0) do |score, c|
         score * 5 + COMPLETION_SCORE_MAP[MATCHING_PAIRS.invert[c]]
@@ -94,5 +76,25 @@ class DayTen
     end
 
     score_list.sort[score_list.size / 2]
+  end
+
+  private
+
+  def line_stack(line)
+    corrupted = false
+    line_stack = []
+    line.each_char do |c|
+      if OPEN_CHARS.include? c
+        line_stack.push c
+        # puts "enqueued #{c}"
+      elsif line_stack.last == MATCHING_PAIRS[c]
+        line_stack.pop
+      else
+        corrupted = true
+        break
+      end
+    end
+
+    [line_stack, corrupted]
   end
 end
