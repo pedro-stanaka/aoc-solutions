@@ -113,3 +113,15 @@ task :day09_pt2 do
   result = DayNine.new("#{__dir__}/inputs/day09.txt").run_pt2
   puts "Basin sizes multiplication: #{result}"
 end
+
+task :day10 do |task_name|
+  day_name = task_name.to_s.split('_').first
+  result = DayTen.new("#{__dir__}/inputs/#{day_name}.txt").run
+  puts "Score for input is: #{result}"
+end
+
+task :day10_pt2 do |task_name|
+  day_name = task_name.to_s.split('_').first
+  result = DayTen.new("#{__dir__}/inputs/#{day_name}.txt").run
+  puts "Score for input is: #{result}"
+end
