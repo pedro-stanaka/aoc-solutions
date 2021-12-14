@@ -46,9 +46,7 @@ class DayTen
   end
 
   def run
-    score = 0
-
-    read_file(file_name).each do |line|
+    read_file(file_name).inject(0) do |score, line|
       parser_stack = []
 
       line.split('').each do |char|
@@ -58,9 +56,9 @@ class DayTen
           score += ERROR_SCORE_MAP[char]
         end
       end
-    end
 
-    score
+      score
+    end
   end
 
   def run_pt2
