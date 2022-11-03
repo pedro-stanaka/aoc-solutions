@@ -7,6 +7,6 @@ gem 'rake'
 gem 'rbs', '~> 2.7'
 
 group :test do
-  gem 'minitest', '~> 5.14'
+  gem 'minitest', '~> 5.16'
   gem 'rubocop', '~> 1.37'
 end
