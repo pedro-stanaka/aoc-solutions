@@ -14,7 +14,7 @@ GEM
       ast (~> 2.4.1)
     rainbow (3.1.1)
     rake (13.0.6)
-    rbs (1.8.0)
+    rbs (2.7.0)
     regexp_parser (2.6.0)
     rexml (3.2.5)
     rubocop (1.37.1)
@@ -39,7 +39,7 @@ DEPENDENCIES
   daru (~> 0.3)
   minitest (~> 5.14)
   rake
-  rbs (~> 1.4)
+  rbs (~> 2.7)
   rubocop (~> 1.37)
 
 BUNDLED WITH
