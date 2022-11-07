@@ -8,5 +8,5 @@ gem 'rbs', '~> 2.7'
 
 group :test do
   gem 'minitest', '~> 5.16'
-  gem 'rubocop', '~> 1.37'
+  gem 'rubocop', '~> 1.38'
 end
