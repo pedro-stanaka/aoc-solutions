@@ -17,7 +17,7 @@ GEM
     rbs (2.7.0)
     regexp_parser (2.6.0)
     rexml (3.2.5)
-    rubocop (1.38.0)
+    rubocop (1.39.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
@@ -40,7 +40,7 @@ DEPENDENCIES
   minitest (~> 5.16)
   rake
   rbs (~> 2.7)
-  rubocop (~> 1.38)
+  rubocop (~> 1.39)
 
 BUNDLED WITH
    2.2.32
