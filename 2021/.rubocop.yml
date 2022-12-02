@@ -10,3 +10,5 @@ Metrics/MethodLength:
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
+Style/Documentation:
+  Enabled: false

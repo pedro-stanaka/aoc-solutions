@@ -15,8 +15,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@359bebbc29cbe6c87da6bc9ea3bc930432750108
-        name: Setup Ruby
+      - name: Setup Ruby, JRuby and TruffleRuby
+        uses: ruby/setup-ruby@v1.126.0
         with:
           bundler-cache: true
           ruby-version: 3.1
