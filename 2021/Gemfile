@@ -10,3 +10,5 @@ group :test do
   gem 'minitest', '~> 5.16'
   gem 'rubocop', '~> 1.39'
 end
+
+gem 'matrix', '~> 0.4.2'

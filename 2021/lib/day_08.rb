@@ -30,7 +30,6 @@ class DayEight
     read_file(filename).map do |line|
       note, output = line.split('|')
 
-
       by_length = note.split(' ').each_with_object(Hash.new { |h, k| h[k] = [] }) do |connection, h|
         h[connection.length] << connection.chars.sort
       end
