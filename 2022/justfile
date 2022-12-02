@@ -1,0 +1,11 @@
+default: test
+
+test:
+    python -m unittest discover -v
+
+lint:
+    python -m flake8
+
+format:
+    python -m black .
+
