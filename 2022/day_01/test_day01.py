@@ -1,6 +1,7 @@
 from unittest import TestCase
 
-from day_01.day01 import *
+from day_01.day01 import get_elves_snacks_calories
+from day_01.day01 import get_top_elf_calories
 
 TEST_INPUT = """1000
 2000
