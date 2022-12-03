@@ -57,10 +57,14 @@ def guess_hand_and_calculate_score(strategy_book: list):
     return final_score
 
 
+def process_input(data: str):
+    data = data.split("\n")
+    return [e.split(" ") for e in data]
+
+
 if __name__ == "__main__":
     input_data = get_data(day=2, year=2022, block=True)
-    input_data = input_data.split("\n")
-    input_data = [e.split(" ") for e in input_data]
+    process_input(input_data)
 
     print("Part 1: {}".format(calculate_score(input_data)))
     print("Part 2: {}".format(guess_hand_and_calculate_score(input_data)))
