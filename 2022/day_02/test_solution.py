@@ -1,6 +1,10 @@
 from unittest import TestCase
 
-from day_02.solution import process_input, guess_hand_and_calculate_score, calculate_score
+from day_02.solution import (
+    process_input,
+    guess_hand_and_calculate_score,
+    calculate_score,
+)
 
 SAMPLE_INPUT = """A Y
 B X

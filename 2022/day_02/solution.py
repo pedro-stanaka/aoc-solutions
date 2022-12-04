@@ -46,7 +46,7 @@ HAND_MAPPING = {
     "CX": 2,
     "AZ": 2,
     "BZ": 3,
-    "CZ": 1
+    "CZ": 1,
 }
 
 
