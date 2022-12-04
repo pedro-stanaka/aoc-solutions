@@ -21,19 +21,33 @@ def calculate_priority(data: list):
     return priority_sum
 
 
+def find_badges_and_sum(input_data: list) -> int:
+    i = 0
+    badges_prio_sum = 0
+    while i < len(input_data):
+        inter_group = (
+            set(input_data[i])
+            .intersection(set(input_data[i + 1]))
+            .intersection(set(input_data[i + 2]))
+        )
+        if len(inter_group) == 1:  # found the badge
+            badges_prio_sum += item_priority(inter_group.pop())
+        i += 3
+
+    return badges_prio_sum
+
+
+def backpack_compartments(elves: list) -> list:
+    return [(e[: len(e) // 2], e[len(e) // 2 :]) for e in elves]
+
+
 if __name__ == "__main__":
     input_data = get_data(day=3, year=2022, block=True)
 
     input_data = input_data.split("\n")
-    compartments = [(e[: len(e) // 2], e[len(e) // 2:]) for e in input_data]
+    compartments = backpack_compartments(input_data)
 
-    i = 0
-    badges_sum = 0
-    while i < len(input_data):
-        inter_group = set(input_data[i]).intersection(set(input_data[i + 1])).intersection(set(input_data[i + 2]))
-        if len(inter_group) == 1:
-            badges_sum += item_priority(inter_group.pop())
-        i += 3
+    badges_sum = find_badges_and_sum(input_data)
 
     print("Part 1: {}".format(calculate_priority(compartments)))
     print("Part 2: {}".format(badges_sum))
