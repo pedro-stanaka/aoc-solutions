@@ -26,10 +26,8 @@ if __name__ == "__main__":
     for rp in ranges:
         if rp[0].issubset(rp[1]) or rp[1].issubset(rp[0]):
             overlap_count += 1
-            print("containment found between {} and {}".format(rp[0], rp[1]))
         if rp[0].intersection(rp[1]) != set():
             inter_count += 1
-            print("intersection found between {} and {}".format(rp[0], rp[1]))
 
     print("Part 1: {}".format(overlap_count))
     print("Part 2: {}".format(inter_count))
