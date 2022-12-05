@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import pandas as pd
 from aocd import get_data
 
+from day_05.crane import CrateMover9000, CrateMover9001
+
 CONTAINER_SIZE = 3
 
 
@@ -17,27 +19,14 @@ class Movement(object):
     def __str__(self):
         return f"Move {self.amount} from {self.source_pile} to {self.target_pile}"
 
-# def pretty_print(piles: list):
-#     # print columns
-#     max_size = max([len(pile) for pile in piles])
-#     printable_piles = []
-#     for p in piles:
-#         if len(p) < max_size:
-#             p.extend([' '] * (max_size - len(p)))
-#         printable_piles.append(p)
-#
-#     pile_mt = np.matrix(printable_piles)
-#     pile_mt = pd.DataFrame(pile_mt)
-#     print(pile_mt.transpose().iloc[::-1])
 
-
-def print_lines(pp: list):
-    n_piles = pp[:]
-    max_size = max([len(pile) for pile in n_piles])
-    for i, pi in enumerate(n_piles):
-        if len(pp) < max_size:
+def print_containers(stacks: list):
+    printable_stacks = stacks[:]
+    max_size = max([len(s) for s in printable_stacks])
+    for si, pi in enumerate(printable_stacks):
+        if len(stacks) < max_size:
             pi.extend(['[ ]'] * (max_size - len(pi)))
-        print("{}: {}".format(i, pi))
+        print("{}: {}".format(si, pi))
 
 
 if __name__ == '__main__':
@@ -65,13 +54,6 @@ if __name__ == '__main__':
     new_piles = new_piles[:-1]
     piles_df = pd.read_csv(io.StringIO('\n'.join(new_piles)), sep=",", header=None)
 
-    # read movements
-    move_re = re.compile(r"move (\d+) from (\d+) to (\d+)")
-    movements = []
-    for m in movements_raw:
-        amount, source, destination = re.findall(move_re, m)[0]
-        movements.append(Movement(int(amount), int(source) - 1, int(destination) - 1))
-
     # read piles
     piles = []
     for _, container in piles_df.items():
@@ -79,19 +61,24 @@ if __name__ == '__main__':
         pile.reverse()
         pile = list(filter(lambda x: x != '', pile))
         piles.append(pile)
-    print_lines(piles)
 
+    # read movements
+    move_re = re.compile(r"move (\d+) from (\d+) to (\d+)")
+    movements = []
+    for m in movements_raw:
+        amount, source, destination = re.findall(move_re, m)[0]
+        movements.append(Movement(int(amount), int(source) - 1, int(destination) - 1))
+
+    # create cranes
+    crane_9000 = CrateMover9000(piles)
+    crane_9001 = CrateMover9001(piles)
+
+    print("before moving:")
     # execute movements
     for m in movements:
-        for _ in range(m.amount):
-            el = piles[m.source_pile].pop()
-            piles[m.target_pile].append(el)
+        print("Move {} from {} to {}".format(m.amount, m.source_pile, m.target_pile))
+        crane_9001.move(m.amount, m.source_pile, m.target_pile)
+        crane_9000.move(m.amount, m.source_pile, m.target_pile)
 
-    # print top lines
-    top_lines = []
-    for i, p in enumerate(piles):
-        print("Pile {}: {}".format(i + 1, p[-1]))
-        top_lines.append(p[-1])
-
-    new = list(map(lambda x: x.lstrip('[').rstrip(']'), top_lines))
-    print(''.join(new))
+    print("Crane 9000: {}".format(crane_9000.top_most_containers()))
+    print("Crane 9001: {}".format(crane_9001.top_most_containers()))
