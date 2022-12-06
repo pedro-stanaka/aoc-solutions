@@ -34,4 +34,3 @@ class TestElfCommunicatorProtocol(TestCase):
                 packet = protocol.process(case["input"])
                 self.assertEqual(packet.packet_start, case["packet"])
                 self.assertEqual(packet.message_start, case["message"])
-
