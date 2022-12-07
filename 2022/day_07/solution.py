@@ -75,7 +75,7 @@ if __name__ == "__main__":
                 else:
                     # get existing dir that we created when reading the subdirs
                     cur_dir = r.get(cur_dir, dir_name)
-                read_file_count = read_dir(input_data[i + 1:], cur_dir)
+                read_file_count = read_dir(input_data[i + 1 :], cur_dir)
                 i += read_file_count + 2
                 continue
             if is_going_up(input_data[i]):
@@ -102,10 +102,21 @@ if __name__ == "__main__":
     print(f"Directory size to exclude: {dir_size_to_delete :,}")
 
     answer = sum(
-        [n.size for n in anytree.findall(dir_tree, filter_=lambda node: node.size < 100_000 and not node.is_leaf)])
+        [
+            n.size
+            for n in anytree.findall(
+                dir_tree, filter_=lambda node: node.size < 100_000 and not node.is_leaf
+            )
+        ]
+    )
     print(f"Day 7, part 1: {answer:,}. Raw: {answer}")
 
-    deletable_dir_sizes = [n.size for n in anytree.findall(dir_tree, filter_=lambda
-        node: node.size > dir_size_to_delete and not node.is_leaf)]
+    deletable_dir_sizes = [
+        n.size
+        for n in anytree.findall(
+            dir_tree,
+            filter_=lambda node: node.size > dir_size_to_delete and not node.is_leaf,
+        )
+    ]
     smallest_dir = min(deletable_dir_sizes)
     print(f"Day 7, part 2: {smallest_dir:,}. Raw: {smallest_dir}")
