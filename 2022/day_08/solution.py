@@ -92,7 +92,9 @@ def scenic_score(grid: np.array, r: int, c: int) -> int:
         if grid[r, i] >= tree_height:
             break
 
-    return visible_trees_down * visible_trees_up * visible_trees_left * visible_trees_right
+    return (
+        visible_trees_down * visible_trees_up * visible_trees_left * visible_trees_right
+    )
 
 
 if __name__ == "__main__":
