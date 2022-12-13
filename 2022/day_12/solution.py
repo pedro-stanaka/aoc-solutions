@@ -22,21 +22,27 @@ def neighbors(hmp: np.array, mg: nx.DiGraph, i: int, j: int) -> None:
 
         cur_elevation = ord(hmp[i, j])
         if hmp[i, j] == "S":
-            cur_elevation = ord('a')
+            cur_elevation = ord("a")
         target_elevation = ord(hmp[x, y])
         if hmp[x, y] == "E":
-            target_elevation = ord('z')
+            target_elevation = ord("z")
 
-        if cur_elevation > target_elevation \
-                or (cur_elevation < target_elevation and abs(cur_elevation - target_elevation) <= 1) \
-                or hmp[i, j] == "S" or hmp[x, y] == "E":
+        if (
+            cur_elevation > target_elevation
+            or (
+                cur_elevation < target_elevation
+                and abs(cur_elevation - target_elevation) <= 1
+            )
+            or hmp[i, j] == "S"
+            or hmp[x, y] == "E"
+        ):
             weight = float(abs(cur_elevation - target_elevation))
             weight = max(weight, 1.0)
             print(f"{cur}({hmp[i, j]}) -> {target}({hmp[x, y]}) - weight: {weight}")
             mg.add_edge(cur, target, weight=weight)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # input_data = aocd.get_data(day=12, year=2022)
     input_data = EXAMPLE
     heightmap = []
@@ -47,9 +53,9 @@ if __name__ == '__main__':
     print(heightmap)
 
     # Find the start and end points
-    start = np.where(heightmap == 'S')
+    start = np.where(heightmap == "S")
     start = f"{start[0][0]}|{start[1][0]}"
-    end = np.where(heightmap == 'E')
+    end = np.where(heightmap == "E")
     end = f"{end[0][0]}|{end[1][0]}"
 
     map_graph = nx.DiGraph()
@@ -58,8 +64,10 @@ if __name__ == '__main__':
         for j in range(heightmap.shape[1]):
             neighbors(heightmap, map_graph, i, j)
 
-    path = nx.shortest_path(map_graph, source=start, target=end, weight='weight')
-    spath_lenght = nx.shortest_path_length(map_graph, source=start, target=end, weight='weight')
+    path = nx.shortest_path(map_graph, source=start, target=end, weight="weight")
+    spath_lenght = nx.shortest_path_length(
+        map_graph, source=start, target=end, weight="weight"
+    )
 
     path_grid = np.full(heightmap.shape, dtype=str, fill_value=" ")
 
@@ -71,13 +79,17 @@ if __name__ == '__main__':
         x, y = p.split("|")
         path_grid[int(x), int(y)] = heightmap[int(x), int(y)]
         if map_graph.get_edge_data(prev, p):
-            print(f"{prev}({heightmap[previous[0], previous[1]]}) -> {p}({heightmap[int(x), int(y)]}) - weight: {map_graph.get_edge_data(prev, p)['weight']}")
+            print(
+                f"{prev}({heightmap[previous[0], previous[1]]}) -> {p}({heightmap[int(x), int(y)]}) - weight: {map_graph.get_edge_data(prev, p)['weight']}"
+            )
         previous = (int(x), int(y))
         prev = p
     # print(path)
     print(path_grid)
 
-    paths = nx.shortest_paths.all_shortest_paths(map_graph, source=start, target=end, weight='weight')
+    paths = nx.shortest_paths.all_shortest_paths(
+        map_graph, source=start, target=end, weight="weight"
+    )
     for p in paths:
         print(p)
 

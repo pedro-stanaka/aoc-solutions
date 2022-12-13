@@ -35,7 +35,19 @@ class Test(TestCase):
                 "left": [[4, 4], 4, 4],
                 "right": [[4, 4], 4, 4, 4],
                 "result": RIGHT_ORDER,
-            }
+            },
+            {
+                "name": "empty vs list of numbers",
+                "left": [],
+                "right": [1, 3, 4],
+                "result": RIGHT_ORDER,
+            },
+            {
+                "name": "empty vs list of numbers - inverse",
+                "left": [1, 3, 4],
+                "right": [],
+                "result": WRONG_ORDER,
+            },
         ]
 
         for case in cases:
