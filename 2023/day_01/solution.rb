@@ -21,16 +21,25 @@ def get_calibration_value(line)
   matches.join.to_i
 end
 
-def get_calibration_value_spelled_digits(line)
-  digits_regex = /one|two|three|four|five|six|seven|eight|nine|\d/
+def get_digit_from_line(line, start_index, step: :start)
+  digits_regex = /(zero|one|two|three|four|five|six|seven|eight|nine|\d)/
+  if step == :start
+    line = line[start_index..-1]
+  else
+    line = line[0..start_index].reverse
+  end
+  line.scan(digits_regex).map do |match|
+    match = match.first if match.is_a?(Array)
+    WORD_TO_DIGIT.key?(match) ? WORD_TO_DIGIT[match] : match
+  end.first
+end
 
-  matches = extract_calibration_value(line, digits_regex)
-  res = matches.map do |m|
-    next WORD_TO_DIGIT[m] if WORD_TO_DIGIT.key?(m)
-    m
-  end.join
+def calibration_value_extended(line)
+  first = get_digit_from_line(line, 0, step: :start)
+  last = get_digit_from_line(line, line.length-1, step: :end)
 
-  res.to_i
+
+  [first, last].join.to_i
 end
 
 # input = File.read("part01_input.txt").split("\n")
@@ -43,12 +52,16 @@ end
 
 
 input_part_2 = File.read("part02_input.txt").split("\n")
+# values = input_part_2.map do |l|
+#   value = get_calibration_value_spelled_digits(l)
+#   puts "value for line #{l}: #{value}"
+#   puts "matches for line #{l}: #{extract_calibration_value(l,/one|two|three|four|five|six|seven|eight|nine|\d/)}"
+#   puts "--------"
+#   value
+# end
+
 values = input_part_2.map do |l|
-  value = get_calibration_value_spelled_digits(l)
-  puts "value for line #{l}: #{value}"
-  puts "matches for line #{l}: #{extract_calibration_value(l,/one|two|three|four|five|six|seven|eight|nine|\d/)}"
-  puts "--------"
-  value
+  calibration_value_extended(l)
 end
 
 sum = values.sum
