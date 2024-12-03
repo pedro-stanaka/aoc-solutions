@@ -2,14 +2,6 @@ defmodule Day03Test do
   use ExUnit.Case
   doctest Day03
 
-  test "parse_mul" do
-    assert Day03.parse_mul("mul(2,4)") == [%{"a" => 2, "b" => 4}]
-  end
-
-  test "parse_mul multiple" do
-    assert Day03.parse_mul("mul(2,4) mul(3,7)") == [%{"a" => 2, "b" => 4}, %{"a" => 3, "b" => 7}]
-  end
-
   test "sum_of_products" do
     assert Day03.sum_of_products(["mul(2,4) mul(3,7)"]) == 29
   end

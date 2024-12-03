@@ -76,19 +76,29 @@ defmodule Day03 do
     defp process_operation({:mul, _nums}, state), do: state
     defp process_operation(nil, state), do: state
 
+    @spec mul(number(), number()) :: number()
     def mul(a, b), do: a * b
+
+    defp multiply_and_sum(muls) do
+        muls
+        |> Enum.map(fn %{"a" => a, "b" => b} -> mul(a, b) end)
+        |> Enum.sum()
+    end
+
+    def parse_mul(line) do
+        ~r/mul\((?<a>\d{1,3}),(?<b>\d{1,3})\)/
+        |> Regex.scan(line, capture: :all_names)
+        |> Stream.map(fn [a, b] ->
+            %{"a" => String.to_integer(a), "b" => String.to_integer(b)}
+        end)
+        |> Enum.to_list()
+    end
 
     @spec sum_of_products(list(String.t())) :: number()
     def sum_of_products(lines) do
         lines
         |> Stream.map(&parse_mul/1)
         |> Stream.map(&multiply_and_sum/1)
-        |> Enum.sum()
-    end
-
-    defp multiply_and_sum(muls) do
-        muls
-        |> Enum.map(fn %{"a" => a, "b" => b} -> mul(a, b) end)
         |> Enum.sum()
     end
 
@@ -110,13 +120,4 @@ defmodule Day03 do
         IO.puts("Part 2: #{part_two()}")
     end
 
-    # Keep this for backward compatibility with tests
-    def parse_mul(line) do
-        ~r/mul\((?<a>\d{1,3}),(?<b>\d{1,3})\)/
-        |> Regex.scan(line, capture: :all_names)
-        |> Stream.map(fn [a, b] ->
-            %{"a" => String.to_integer(a), "b" => String.to_integer(b)}
-        end)
-        |> Enum.to_list()
-    end
 end
