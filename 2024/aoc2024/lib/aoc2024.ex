@@ -39,15 +39,10 @@ defmodule Aoc2024 do
 
   # Run the solution for a specific day
   defp run_day(day) do
-    IO.puts("Debug: Attempting to run Day#{day}")
     module = String.to_existing_atom("Elixir.Day#{day}")
-    IO.puts("Debug: Module atom created: #{inspect(module)}")
 
-    IO.puts("Debug: Checking if module exists: #{Code.ensure_loaded?(module)}")
-    IO.puts("Debug: Checking if main/1 exists: #{function_exported?(module, :main, 1)}")
-
-    if function_exported?(module, :main, 1) do
-      IO.puts("Debug: Running #{module}.main([])")
+    if Code.ensure_loaded?(module) and function_exported?(module, :main, 1) do
+      IO.puts("Running Day#{day} solution:")
       apply(module, :main, [[]])
     else
       IO.puts(:stderr, "Error: Day#{day} solution not implemented yet")
