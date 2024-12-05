@@ -1,5 +1,4 @@
 defmodule DayFourTest do
   use ExUnit.Case
-  doctest DayFour
-
+  doctest Day04
 end

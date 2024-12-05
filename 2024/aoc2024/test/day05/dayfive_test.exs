@@ -1,6 +1,9 @@
 defmodule Day05Test do
   use ExUnit.Case
   doctest Day05
+  doctest Day05.Manual
+  doctest Day05.Rule
+  doctest Day05.OrderingRules
 
   @sample_rules %Day05.OrderingRules{
     rules: [
@@ -114,11 +117,11 @@ defmodule Day05Test do
     assert Day05.OrderingRules.has?(ruleset, 97), "example ruleset should have rule 97"
     manuals = Day05.Manual.populate(example_input)
     ordered_manuals = manuals
-      |> Enum.filter(&Day05.Manual.is_ordered?(&1, ruleset))
+      |> Enum.filter(&Day05.Manual.ordered?(&1, ruleset))
     assert length(ordered_manuals) == 3 # the first 3 manuals are ordered
   end
 
-  test "Manual.is_ordered?" do
+  test "Manual.ordered?" do
     rules = @sample_rules
     test_cases = [
       # Manual 1: "75,47,61,53,29"
@@ -198,7 +201,7 @@ defmodule Day05Test do
     ]
 
     for {manual, rules, expected} <- test_cases do
-      assert Day05.Manual.is_ordered?(manual, rules) == expected,
+      assert Day05.Manual.ordered?(manual, rules) == expected,
              "Expected manual \n#{inspect(manual)}\nwith rules \n#{inspect(rules)}\nto be #{if expected, do: "ordered", else: "unordered"}"
     end
   end
@@ -251,7 +254,7 @@ defmodule Day05Test do
 
     for {manual, rules, expected} <- test_cases do
       assert Day05.Manual.ordered(manual, rules) == expected
-      assert Day05.Manual.is_ordered?(expected, rules)
+      assert Day05.Manual.ordered?(expected, rules)
     end
   end
 end
