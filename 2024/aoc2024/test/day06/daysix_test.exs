@@ -3,7 +3,6 @@ defmodule Day06Test do
   doctest Day06
 
   test "Map.populate" do
-
     actual =  Day06.Map.populate([
       "....#.....\n",
       ".........#\n",
@@ -22,7 +21,7 @@ defmodule Day06Test do
     assert length(hd(actual.rows)) == 10
 
     assert actual == %Day06.Map{
-      guard: %{direction: %{dx: 0, dy: 1}, pos: %Day06.Coord{x: 4, y: 6}},
+      guard: %{direction: %{dx: 0, dy: -1}, pos: %Day06.Coord{x: 4, y: 6}},
       obstacles: [
         %Day06.Coord{x: 4, y: 0},
         %Day06.Coord{x: 9, y: 1},
@@ -46,7 +45,29 @@ defmodule Day06Test do
         [".", ".", ".", ".", ".", ".", "#", ".", ".", "."],
       ],
     }
+  end
 
+  test "Map.count_visiting_positions" do
+    actual =  Day06.Map.populate([
+      "....#.....\n",
+      ".........#\n",
+      "..........\n",
+      "..#.......\n",
+      ".......#..\n",
+      "..........\n",
+      ".#..^.....\n",
+      "........#.\n",
+      "#.........\n",
+      "......#...\n"
+    ])
+
+    visited_positions = Day06.Map.guard_routine(actual) |> MapSet.to_list()
+    assert length(visited_positions) == 41,
+      """
+      Expected 41 visiting positions, got #{length(visited_positions)}.
+      Map:
+      #{Day06.Map.show_guard_routine(actual)}
+      """
   end
 
 end
