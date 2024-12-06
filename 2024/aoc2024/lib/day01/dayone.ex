@@ -1,4 +1,9 @@
 defmodule Day01 do
+  @moduledoc """
+  Solution for Day 1 of Advent of Code 2024.
+  Handles list comparison and distance calculations.
+  """
+
   def read_lists(file_stream) do
     [list1, list2] = file_stream
     |> Stream.map(fn line ->

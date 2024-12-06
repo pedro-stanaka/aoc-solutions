@@ -1,4 +1,8 @@
 defmodule WordMatrix do
+  @moduledoc """
+  Handles matrix operations for finding words in a grid of characters.
+  Supports searching in multiple directions and special X-shaped patterns.
+  """
   defstruct rows: []
 
   @doc """
@@ -45,9 +49,9 @@ defmodule WordMatrix do
     width = length(hd(rows))
 
     # Generate all possible starting positions
-    for row <- 0..(height-1),
-        col <- 0..(width-1),
-        direction <- [{0,1}, {1,0}, {1,1}, {-1,1}], # Right, Down, Diag Down-Right, Diag Up-Right
+    for row <- 0..(height - 1),
+        col <- 0..(width - 1),
+        direction <- [{0, 1}, {1, 0}, {1, 1}, {-1, 1}], # Right, Down, Diag Down-Right, Diag Up-Right
         check_word_at_position(rows, row, col, word, direction) or
         check_word_at_position(rows, row, col, String.reverse(word), direction),
         reduce: 0 do
@@ -87,8 +91,8 @@ defmodule WordMatrix do
     width = length(hd(rows))
 
     # For each possible center position
-    for row <- 1..(height-2),
-        col <- 1..(width-2),
+    for row <- 1..(height - 2),
+        col <- 1..(width - 2),
         reduce: 0 do
       acc -> count_x_mas_at_position(rows, row, col, acc)
     end
@@ -110,10 +114,10 @@ defmodule WordMatrix do
 
   defp get_corners(rows, row, col) do
     %{
-      top_left: get_cell(rows, row-1, col-1),
-      top_right: get_cell(rows, row-1, col+1),
-      bottom_left: get_cell(rows, row+1, col-1),
-      bottom_right: get_cell(rows, row+1, col+1)
+      top_left: get_cell(rows, row - 1, col - 1),
+      top_right: get_cell(rows, row - 1, col + 1),
+      bottom_left: get_cell(rows, row + 1, col - 1),
+      bottom_right: get_cell(rows, row + 1, col + 1)
     }
   end
 
@@ -137,7 +141,7 @@ defmodule WordMatrix do
 
     if end_row >= 0 and end_row < height and end_col >= 0 and end_col < width do
       # Get characters along direction
-      chars = for i <- 0..(word_length-1) do
+      chars = for i <- 0..(word_length - 1) do
         rows
         |> Enum.at(row + i * dy)
         |> Enum.at(col + i * dx)

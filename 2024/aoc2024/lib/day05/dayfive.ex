@@ -1,5 +1,13 @@
 defmodule Day05 do
+  @moduledoc """
+  Solution for Day 5 of Advent of Code 2024.
+  Handles manual page ordering based on given rules.
+  """
+
   defmodule Rule do
+    @moduledoc """
+    Represents a rule for page ordering, where `left` page must appear before `right` page.
+    """
     @type t :: %__MODULE__{left: integer(), right: integer()}
     defstruct left: 0, right: 0
 
@@ -9,6 +17,9 @@ defmodule Day05 do
   end
 
   defmodule OrderingRules do
+    @moduledoc """
+    Collection of rules that define the correct ordering of pages in manuals.
+    """
     @type t :: %__MODULE__{rules: [Rule.t()]}
     defstruct rules: []
 
@@ -35,6 +46,9 @@ defmodule Day05 do
   end
 
   defmodule Instruction do
+    @moduledoc """
+    Represents a single instruction in a manual, with a rule number and its position in the sequence.
+    """
     @type t :: %__MODULE__{rule: integer(), appearing_order: integer()}
     defstruct rule: 0, appearing_order: 0
 
@@ -44,16 +58,31 @@ defmodule Day05 do
   end
 
   defmodule Manual do
+    @moduledoc """
+    Represents a manual with a sequence of instructions that must follow certain ordering rules.
+    """
     @type t :: %__MODULE__{instructions: [Instruction.t()]}
     defstruct instructions: []
 
+    @doc """
+    Returns the middle instruction of the manual.
+
+    ### Examples
+
+    iex> Day05.Manual.middle_instruction(%Day05.Manual{instructions: [
+    ...>   %Day05.Instruction{rule: 1, appearing_order: 0},
+    ...>   %Day05.Instruction{rule: 2, appearing_order: 1},
+    ...>   %Day05.Instruction{rule: 3, appearing_order: 2}
+    ...> ]})
+    %Day05.Instruction{rule: 2, appearing_order: 1}
+    """
     def middle_instruction(%Manual{instructions: instructions}) do
       instructions
       |> Enum.sort_by(& &1.appearing_order)
       |> Enum.at(div(length(instructions), 2))
     end
 
-    def is_ordered?(%Manual{instructions: instructions} = manual, %OrderingRules{rules: rules}) do
+    def ordered?(%Manual{instructions: instructions} = manual, %OrderingRules{rules: rules}) do
       # for each rule (left|right), check if left appears before right
       Enum.all?(rules, fn rule ->
         not (has?(manual, rule.left) and has?(manual, rule.right)) or  # if either number is missing, rule is satisfied
@@ -72,7 +101,7 @@ defmodule Day05 do
     """
     def ordered(%Manual{instructions: instructions} = manual, %OrderingRules{rules: rules} = ruleset) do
         # base case: the manual is already ordered
-        if is_ordered?(manual, ruleset) do
+        if ordered?(manual, ruleset) do
           manual
         else
           # check which rules are violated
@@ -133,7 +162,7 @@ defmodule Day05 do
 
     manuals
     # only consider manuals that are already ordered
-    |> Enum.filter(&Manual.is_ordered?(&1, ruleset))
+    |> Enum.filter(&Manual.ordered?(&1, ruleset))
     # get the middle instruction of each manual
     |> Enum.map(&Manual.middle_instruction/1)
     # take the rule of the middle instruction
@@ -154,7 +183,7 @@ defmodule Day05 do
 
     unordered_manuals =
         manuals
-        |> Enum.filter(&not (Manual.is_ordered?(&1, ruleset)))
+        |> Enum.filter(&not (Manual.ordered?(&1, ruleset)))
 
     unordered_manuals
     |> Enum.map(&Manual.ordered(&1, ruleset))
