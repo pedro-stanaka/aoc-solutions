@@ -70,4 +70,25 @@ defmodule Day06Test do
       """
   end
 
+  test "find_loop_positions finds all positions that create loops" do
+    map = Day06.Map.populate([
+      "....#.....\n",
+      ".........#\n",
+      "..........\n",
+      "..#.......\n",
+      ".......#..\n",
+      "..........\n",
+      ".#..^.....\n",
+      "........#.\n",
+      "#.........\n",
+      "......#...\n"
+    ])
+
+    loop_positions = Day06.Map.find_loop_positions(map)
+    assert length(loop_positions) == 6,
+      """
+      Expected 6 loop-creating positions, got #{length(loop_positions)}.
+      """
+  end
+
 end
