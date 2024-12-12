@@ -12,7 +12,7 @@ defmodule Day05 do
     defstruct left: 0, right: 0
 
     def new([left, right]) do
-        struct(Rule, left: left, right: right)
+      struct(Rule, left: left, right: right)
     end
   end
 
@@ -28,20 +28,22 @@ defmodule Day05 do
     end
 
     def populate(lines) do
-        lines
-        |> Stream.map(&String.trim/1)
-        |> Stream.map(&String.split(&1, "|"))
-        |> Stream.take_while(&(&1 != [""]))
-        |> Stream.map(fn parts ->
-          parts = Enum.map(parts, fn part ->
+      lines
+      |> Stream.map(&String.trim/1)
+      |> Stream.map(&String.split(&1, "|"))
+      |> Stream.take_while(&(&1 != [""]))
+      |> Stream.map(fn parts ->
+        parts =
+          Enum.map(parts, fn part ->
             part
             |> String.trim()
             |> String.to_integer()
           end)
-          Rule.new(parts)
-        end)
-        |> Enum.to_list()
-        |> then(&struct(OrderingRules, rules: &1))
+
+        Rule.new(parts)
+      end)
+      |> Enum.to_list()
+      |> then(&struct(OrderingRules, rules: &1))
     end
   end
 
@@ -53,7 +55,7 @@ defmodule Day05 do
     defstruct rule: 0, appearing_order: 0
 
     def new(rule, appearing_order) do
-        struct(Instruction, rule: rule, appearing_order: appearing_order)
+      struct(Instruction, rule: rule, appearing_order: appearing_order)
     end
   end
 
@@ -85,9 +87,10 @@ defmodule Day05 do
     def ordered?(%Manual{instructions: instructions} = manual, %OrderingRules{rules: rules}) do
       # for each rule (left|right), check if left appears before right
       Enum.all?(rules, fn rule ->
-        not (has?(manual, rule.left) and has?(manual, rule.right)) or  # if either number is missing, rule is satisfied
-        Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end) <
-        Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
+        # if either number is missing, rule is satisfied
+        not (has?(manual, rule.left) and has?(manual, rule.right)) or
+          Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end) <
+            Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
       end)
     end
 
@@ -99,66 +102,80 @@ defmodule Day05 do
     @doc """
     Returns a new Manual with the instructions reordered to satisfy the given rules.
     """
-    def ordered(%Manual{instructions: instructions} = manual, %OrderingRules{rules: rules} = ruleset) do
-        # base case: the manual is already ordered
-        if ordered?(manual, ruleset) do
-          manual
-        else
-          # check which rules are violated
-          violated_rules = Enum.filter(rules, fn rule ->
-            has?(manual, rule.left) and has?(manual, rule.right) and # only consider rules where both numbers exist
-            Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end) >
-            Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
+    def ordered(
+          %Manual{instructions: instructions} = manual,
+          %OrderingRules{rules: rules} = ruleset
+        ) do
+      # base case: the manual is already ordered
+      if ordered?(manual, ruleset) do
+        manual
+      else
+        # check which rules are violated
+        violated_rules =
+          Enum.filter(rules, fn rule ->
+            # only consider rules where both numbers exist
+            has?(manual, rule.left) and has?(manual, rule.right) and
+              Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end) >
+                Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
           end)
 
-          # Take the first violated rule and swap its elements
-          case violated_rules do
-            [rule | _] ->
-              left_index = Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end)
-              right_index = Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
+        # Take the first violated rule and swap its elements
+        case violated_rules do
+          [rule | _] ->
+            left_index =
+              Enum.find_index(instructions, fn instruction -> instruction.rule == rule.left end)
 
-              left_instruction = Enum.at(instructions, left_index)
-              right_instruction = Enum.at(instructions, right_index)
+            right_index =
+              Enum.find_index(instructions, fn instruction -> instruction.rule == rule.right end)
 
-              new_instructions = List.replace_at(instructions, left_index,
-                %{right_instruction | appearing_order: left_instruction.appearing_order})
-              |> List.replace_at(right_index,
-                %{left_instruction | appearing_order: right_instruction.appearing_order})
+            left_instruction = Enum.at(instructions, left_index)
+            right_instruction = Enum.at(instructions, right_index)
 
-              ordered(%Manual{instructions: new_instructions}, ruleset)
+            new_instructions =
+              List.replace_at(instructions, left_index, %{
+                right_instruction
+                | appearing_order: left_instruction.appearing_order
+              })
+              |> List.replace_at(
+                right_index,
+                %{left_instruction | appearing_order: right_instruction.appearing_order}
+              )
 
-            [] -> manual
-          end
+            ordered(%Manual{instructions: new_instructions}, ruleset)
+
+          [] ->
+            manual
         end
+      end
     end
 
     def populate(lines) do
-        # skip all lines until the first empty line
-        lines
-        |> Stream.drop_while(&(&1 != "\n"))
-        |> Stream.drop(1)
-        |> Stream.map(&String.trim/1)
-        |> Stream.map(&String.split(&1, ","))
-        |> Stream.map(fn parts ->
-          parts
-          |> Enum.with_index()
-          |> Enum.map(fn {rule, index} ->
-            Instruction.new(String.to_integer(rule), index)
-          end)
+      # skip all lines until the first empty line
+      lines
+      |> Stream.drop_while(&(&1 != "\n"))
+      |> Stream.drop(1)
+      |> Stream.map(&String.trim/1)
+      |> Stream.map(&String.split(&1, ","))
+      |> Stream.map(fn parts ->
+        parts
+        |> Enum.with_index()
+        |> Enum.map(fn {rule, index} ->
+          Instruction.new(String.to_integer(rule), index)
         end)
-        |> Stream.map(&struct(Manual, instructions: &1))
-        |> Enum.to_list()
+      end)
+      |> Stream.map(&struct(Manual, instructions: &1))
+      |> Enum.to_list()
     end
   end
 
   def part_one(filename) do
     ruleset =
-        File.stream!(filename)
-        |> OrderingRules.populate()
+      File.stream!(filename)
+      |> OrderingRules.populate()
 
     manuals =
-        File.stream!(filename)
-        |> Manual.populate()
+      File.stream!(filename)
+      |> Manual.populate()
 
     manuals
     # only consider manuals that are already ordered
@@ -169,21 +186,20 @@ defmodule Day05 do
     |> Enum.map(& &1.rule)
     # sum the rules
     |> Enum.sum()
-
   end
 
   def part_two(filename) do
     ruleset =
-        File.stream!(filename)
-        |> OrderingRules.populate()
+      File.stream!(filename)
+      |> OrderingRules.populate()
 
     manuals =
-        File.stream!(filename)
-        |> Manual.populate()
+      File.stream!(filename)
+      |> Manual.populate()
 
     unordered_manuals =
-        manuals
-        |> Enum.filter(&not (Manual.ordered?(&1, ruleset)))
+      manuals
+      |> Enum.filter(&(not Manual.ordered?(&1, ruleset)))
 
     unordered_manuals
     |> Enum.map(&Manual.ordered(&1, ruleset))

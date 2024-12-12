@@ -5,15 +5,17 @@ defmodule Day01 do
   """
 
   def read_lists(file_stream) do
-    [list1, list2] = file_stream
-    |> Stream.map(fn line ->
-      line
-      |> String.split()
-      |> Enum.map(&String.to_integer/1)
-    end)
-    |> Stream.zip()
-    |> Stream.map(&Tuple.to_list/1)
-    |> Enum.to_list()
+    [list1, list2] =
+      file_stream
+      |> Stream.map(fn line ->
+        line
+        |> String.split()
+        |> Enum.map(&String.to_integer/1)
+      end)
+      |> Stream.zip()
+      |> Stream.map(&Tuple.to_list/1)
+      |> Enum.to_list()
+
     {list1, list2}
   end
 

@@ -32,53 +32,51 @@ defmodule Day05Test do
   }
   test "OrderingRules.populate" do
     assert Day05.OrderingRules.populate([
-      "47|53\n",
-      "97|13\n",
-      "\n",
-      "18,10,22\n"
-    ]) == %Day05.OrderingRules{
-      rules: [
-        %Day05.Rule{left: 47, right: 53},
-        %Day05.Rule{left: 97, right: 13}
-      ]
-    }
+             "47|53\n",
+             "97|13\n",
+             "\n",
+             "18,10,22\n"
+           ]) == %Day05.OrderingRules{
+             rules: [
+               %Day05.Rule{left: 47, right: 53},
+               %Day05.Rule{left: 97, right: 13}
+             ]
+           }
   end
 
   test "Manual.populate" do
     assert Day05.Manual.populate([
-      "47|53\n",
-      "97|13\n",
-      "\n",
-      "18,10,22\n",
-      "10,29,22\n",
-    ]) == [
-      %Day05.Manual{
-        instructions: [
-          %Day05.Instruction{rule: 18, appearing_order: 0},
-          %Day05.Instruction{rule: 10, appearing_order: 1},
-          %Day05.Instruction{rule: 22, appearing_order: 2},
-        ]
-      },
-      %Day05.Manual{
-        instructions: [
-          %Day05.Instruction{rule: 10, appearing_order: 0},
-          %Day05.Instruction{rule: 29, appearing_order: 1},
-          %Day05.Instruction{rule: 22, appearing_order: 2},
-        ]
-      }
-    ]
+             "47|53\n",
+             "97|13\n",
+             "\n",
+             "18,10,22\n",
+             "10,29,22\n"
+           ]) == [
+             %Day05.Manual{
+               instructions: [
+                 %Day05.Instruction{rule: 18, appearing_order: 0},
+                 %Day05.Instruction{rule: 10, appearing_order: 1},
+                 %Day05.Instruction{rule: 22, appearing_order: 2}
+               ]
+             },
+             %Day05.Manual{
+               instructions: [
+                 %Day05.Instruction{rule: 10, appearing_order: 0},
+                 %Day05.Instruction{rule: 29, appearing_order: 1},
+                 %Day05.Instruction{rule: 22, appearing_order: 2}
+               ]
+             }
+           ]
   end
 
   test "Manual.middle_instruction" do
-    assert Day05.Manual.middle_instruction(
-      %Day05.Manual{
-        instructions: [
-          %Day05.Instruction{rule: 47, appearing_order: 0},
-          %Day05.Instruction{rule: 97, appearing_order: 1},
-          %Day05.Instruction{rule: 18, appearing_order: 2},
-        ]
-      }
-    ) == %Day05.Instruction{rule: 97, appearing_order: 1}
+    assert Day05.Manual.middle_instruction(%Day05.Manual{
+             instructions: [
+               %Day05.Instruction{rule: 47, appearing_order: 0},
+               %Day05.Instruction{rule: 97, appearing_order: 1},
+               %Day05.Instruction{rule: 18, appearing_order: 2}
+             ]
+           }) == %Day05.Instruction{rule: 97, appearing_order: 1}
   end
 
   test "integration manual and ordering" do
@@ -116,13 +114,18 @@ defmodule Day05Test do
     ruleset = Day05.OrderingRules.populate(example_input)
     assert Day05.OrderingRules.has?(ruleset, 97), "example ruleset should have rule 97"
     manuals = Day05.Manual.populate(example_input)
-    ordered_manuals = manuals
+
+    ordered_manuals =
+      manuals
       |> Enum.filter(&Day05.Manual.ordered?(&1, ruleset))
-    assert length(ordered_manuals) == 3 # the first 3 manuals are ordered
+
+    # the first 3 manuals are ordered
+    assert length(ordered_manuals) == 3
   end
 
   test "Manual.ordered?" do
     rules = @sample_rules
+
     test_cases = [
       # Manual 1: "75,47,61,53,29"
       {
@@ -132,11 +135,12 @@ defmodule Day05Test do
             %Day05.Instruction{rule: 47, appearing_order: 1},
             %Day05.Instruction{rule: 61, appearing_order: 2},
             %Day05.Instruction{rule: 53, appearing_order: 3},
-            %Day05.Instruction{rule: 29, appearing_order: 4},
+            %Day05.Instruction{rule: 29, appearing_order: 4}
           ]
         },
         rules,
-        true  # This should be ordered because:
+        # This should be ordered because:
+        true
         # 75 appears before 47 (75|47)
         # 75 appears before 61 (75|61)
         # 75 appears before 53 (75|53)
@@ -157,11 +161,12 @@ defmodule Day05Test do
             %Day05.Instruction{rule: 61, appearing_order: 1},
             %Day05.Instruction{rule: 53, appearing_order: 2},
             %Day05.Instruction{rule: 29, appearing_order: 3},
-            %Day05.Instruction{rule: 13, appearing_order: 4},
+            %Day05.Instruction{rule: 13, appearing_order: 4}
           ]
         },
         rules,
-        true  # This should be ordered because:
+        # This should be ordered because:
+        true
         # 97 -> 13 (satisfied: 13 appears after 97)
         # 97 -> 61 (satisfied: 61 appears after 97)
         # 61 -> 13 (satisfied: 13 appears after 61)
@@ -174,11 +179,12 @@ defmodule Day05Test do
           instructions: [
             %Day05.Instruction{rule: 75, appearing_order: 0},
             %Day05.Instruction{rule: 29, appearing_order: 1},
-            %Day05.Instruction{rule: 13, appearing_order: 2},
+            %Day05.Instruction{rule: 13, appearing_order: 2}
           ]
         },
         rules,
-        true  # This should be ordered because:
+        # This should be ordered because:
+        true
         # 75 -> 29 (satisfied: 29 appears after 75)
         # 29 -> 13 (satisfied: 13 appears after 29)
       },
@@ -191,11 +197,12 @@ defmodule Day05Test do
             %Day05.Instruction{rule: 97, appearing_order: 1},
             %Day05.Instruction{rule: 47, appearing_order: 2},
             %Day05.Instruction{rule: 61, appearing_order: 3},
-            %Day05.Instruction{rule: 53, appearing_order: 4},
+            %Day05.Instruction{rule: 53, appearing_order: 4}
           ]
         },
         rules,
-        false  # This should be unordered because:
+        # This should be unordered because:
+        false
         # 97 -> 47 is violated (47 appears after 97)
       }
     ]
@@ -218,7 +225,7 @@ defmodule Day05Test do
             %Day05.Instruction{rule: 97, appearing_order: 1},
             %Day05.Instruction{rule: 47, appearing_order: 2},
             %Day05.Instruction{rule: 61, appearing_order: 3},
-            %Day05.Instruction{rule: 53, appearing_order: 4},
+            %Day05.Instruction{rule: 53, appearing_order: 4}
           ]
         },
         rules,
@@ -228,7 +235,7 @@ defmodule Day05Test do
             %Day05.Instruction{rule: 75, appearing_order: 1},
             %Day05.Instruction{rule: 47, appearing_order: 2},
             %Day05.Instruction{rule: 61, appearing_order: 3},
-            %Day05.Instruction{rule: 53, appearing_order: 4},
+            %Day05.Instruction{rule: 53, appearing_order: 4}
           ]
         }
       },
@@ -238,7 +245,7 @@ defmodule Day05Test do
           instructions: [
             %Day05.Instruction{rule: 61, appearing_order: 0},
             %Day05.Instruction{rule: 13, appearing_order: 1},
-            %Day05.Instruction{rule: 29, appearing_order: 2},
+            %Day05.Instruction{rule: 29, appearing_order: 2}
           ]
         },
         rules,
@@ -246,7 +253,7 @@ defmodule Day05Test do
           instructions: [
             %Day05.Instruction{rule: 61, appearing_order: 0},
             %Day05.Instruction{rule: 29, appearing_order: 1},
-            %Day05.Instruction{rule: 13, appearing_order: 2},
+            %Day05.Instruction{rule: 13, appearing_order: 2}
           ]
         }
       }

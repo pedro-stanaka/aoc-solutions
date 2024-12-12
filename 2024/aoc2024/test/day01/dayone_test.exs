@@ -13,8 +13,8 @@ defmodule Day01Test do
     ]
 
     assert Day01.read_lists(input) == {
-      [3, 4, 2, 1, 3, 3],
-      [4, 3, 5, 3, 9, 3]
-    }
+             [3, 4, 2, 1, 3, 3],
+             [4, 3, 5, 3, 9, 3]
+           }
   end
 end

@@ -7,7 +7,9 @@ defmodule Day03Test do
   end
 
   test "example input" do
-    assert Day03.sum_of_products(["xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"]) == 161
+    assert Day03.sum_of_products([
+             "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+           ]) == 161
   end
 
   test "parse_mul_conditional" do
@@ -15,22 +17,30 @@ defmodule Day03Test do
       {
         "example from part two",
         "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))",
-        [%{"a" => 2, "b" => 4}, %{"a" => 8, "b" => 5}]  # only first mul and last mul (after do()) are enabled
+        # only first mul and last mul (after do()) are enabled
+        [%{"a" => 2, "b" => 4}, %{"a" => 8, "b" => 5}]
       },
       {
         "disabled and enabled sequence",
         "mul(1,2)don't()mul(3,4)mul(4,5)do()mul(5,6)mul(7,8)",
-        [%{"a" => 1, "b" => 2}, %{"a" => 5, "b" => 6}, %{"a" => 7, "b" => 8}]  # first mul and all muls after do() are enabled
+        # first mul and all muls after do() are enabled
+        [%{"a" => 1, "b" => 2}, %{"a" => 5, "b" => 6}, %{"a" => 7, "b" => 8}]
       },
       {
         "multiple disabled and enabled sequences",
         "mul(1,2)don't()mul(3,4)mul(9,10)do()mul(5,6)mul(7,8)don't()mul(11,12)do()mul(13,14)",
-        [%{"a" => 1, "b" => 2}, %{"a" => 5, "b" => 6}, %{"a" => 7, "b" => 8}, %{"a" => 13, "b" => 14}]
+        [
+          %{"a" => 1, "b" => 2},
+          %{"a" => 5, "b" => 6},
+          %{"a" => 7, "b" => 8},
+          %{"a" => 13, "b" => 14}
+        ]
       },
       {
         "complex sequence with multiple controls",
         "]};don't(){^mul(131,421)who()+where()why()why() mul)who()from(361,208)#($>/mul(986,7)~!/+:what(911,564)&~mul(427,317):<how()[-+?from()*do()??$'why(),$#,(mul(388,863)]$;mul(93,214)${from(),>mul(554,29)",
-        [%{"a" => 388, "b" => 863}, %{"a" => 93, "b" => 214}, %{"a" => 554, "b" => 29}]  # all muls after last do() are enabled
+        # all muls after last do() are enabled
+        [%{"a" => 388, "b" => 863}, %{"a" => 93, "b" => 214}, %{"a" => 554, "b" => 29}]
       },
       {
         "do() vs undo()",
@@ -53,6 +63,7 @@ defmodule Day03Test do
 
     for {description, input, expected} <- test_cases do
       actual = Day03.parse_mul_conditional(input)
+
       assert actual == expected,
              """
              Failed test case: #{description}

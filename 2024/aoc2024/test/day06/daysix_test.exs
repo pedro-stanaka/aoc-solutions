@@ -3,92 +3,96 @@ defmodule Day06Test do
   doctest Day06
 
   test "Map.populate" do
-    actual =  Day06.Map.populate([
-      "....#.....\n",
-      ".........#\n",
-      "..........\n",
-      "..#.......\n",
-      ".......#..\n",
-      "..........\n",
-      ".#..^.....\n",
-      "........#.\n",
-      "#.........\n",
-      "......#...\n"
-    ])
+    actual =
+      Day06.Map.populate([
+        "....#.....\n",
+        ".........#\n",
+        "..........\n",
+        "..#.......\n",
+        ".......#..\n",
+        "..........\n",
+        ".#..^.....\n",
+        "........#.\n",
+        "#.........\n",
+        "......#...\n"
+      ])
 
     # assert shape
     assert length(actual.rows) == 10
     assert length(hd(actual.rows)) == 10
 
     assert actual == %Day06.Map{
-      guard: %{direction: %{dx: 0, dy: -1}, pos: %Day06.Coord{x: 4, y: 6}},
-      obstacles: [
-        %Day06.Coord{x: 4, y: 0},
-        %Day06.Coord{x: 9, y: 1},
-        %Day06.Coord{x: 2, y: 3},
-        %Day06.Coord{x: 7, y: 4},
-        %Day06.Coord{x: 1, y: 6},
-        %Day06.Coord{x: 8, y: 7},
-        %Day06.Coord{x: 0, y: 8},
-        %Day06.Coord{x: 6, y: 9}
-      ],
-      rows: [
-        [".", ".", ".", ".", "#", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", "#", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", "#", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", "#", ".", ".", "^", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
-        ["#", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-        [".", ".", ".", ".", ".", ".", "#", ".", ".", "."],
-      ],
-    }
+             guard: %{direction: %{dx: 0, dy: -1}, pos: %Day06.Coord{x: 4, y: 6}},
+             obstacles: [
+               %Day06.Coord{x: 4, y: 0},
+               %Day06.Coord{x: 9, y: 1},
+               %Day06.Coord{x: 2, y: 3},
+               %Day06.Coord{x: 7, y: 4},
+               %Day06.Coord{x: 1, y: 6},
+               %Day06.Coord{x: 8, y: 7},
+               %Day06.Coord{x: 0, y: 8},
+               %Day06.Coord{x: 6, y: 9}
+             ],
+             rows: [
+               [".", ".", ".", ".", "#", ".", ".", ".", ".", "."],
+               [".", ".", ".", ".", ".", ".", ".", ".", ".", "#"],
+               [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+               [".", ".", "#", ".", ".", ".", ".", ".", ".", "."],
+               [".", ".", ".", ".", ".", ".", ".", "#", ".", "."],
+               [".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+               [".", "#", ".", ".", "^", ".", ".", ".", ".", "."],
+               [".", ".", ".", ".", ".", ".", ".", ".", "#", "."],
+               ["#", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+               [".", ".", ".", ".", ".", ".", "#", ".", ".", "."]
+             ]
+           }
   end
 
   test "Map.count_visiting_positions" do
-    actual =  Day06.Map.populate([
-      "....#.....\n",
-      ".........#\n",
-      "..........\n",
-      "..#.......\n",
-      ".......#..\n",
-      "..........\n",
-      ".#..^.....\n",
-      "........#.\n",
-      "#.........\n",
-      "......#...\n"
-    ])
+    actual =
+      Day06.Map.populate([
+        "....#.....\n",
+        ".........#\n",
+        "..........\n",
+        "..#.......\n",
+        ".......#..\n",
+        "..........\n",
+        ".#..^.....\n",
+        "........#.\n",
+        "#.........\n",
+        "......#...\n"
+      ])
 
     visited_positions = Day06.Map.guard_routine(actual) |> MapSet.to_list()
+
     assert length(visited_positions) == 41,
-      """
-      Expected 41 visiting positions, got #{length(visited_positions)}.
-      Map:
-      #{Day06.Map.show_guard_routine(actual)}
-      """
+           """
+           Expected 41 visiting positions, got #{length(visited_positions)}.
+           Map:
+           #{Day06.Map.show_guard_routine(actual)}
+           """
   end
 
   test "find_loop_positions finds all positions that create loops" do
-    map = Day06.Map.populate([
-      "....#.....\n",
-      ".........#\n",
-      "..........\n",
-      "..#.......\n",
-      ".......#..\n",
-      "..........\n",
-      ".#..^.....\n",
-      "........#.\n",
-      "#.........\n",
-      "......#...\n"
-    ])
+    map =
+      Day06.Map.populate([
+        "....#.....\n",
+        ".........#\n",
+        "..........\n",
+        "..#.......\n",
+        ".......#..\n",
+        "..........\n",
+        ".#..^.....\n",
+        "........#.\n",
+        "#.........\n",
+        "......#...\n"
+      ])
 
     loop_positions = Day06.Map.find_loop_positions(map)
-    assert length(loop_positions) == 6,
-      """
-      Expected 6 loop-creating positions, got #{length(loop_positions)}.
-      """
-  end
 
+    assert length(loop_positions) == 6,
+           """
+           Expected 6 loop-creating positions, got #{length(loop_positions)}.
+           """
+  end
 end

@@ -51,9 +51,10 @@ defmodule WordMatrix do
     # Generate all possible starting positions
     for row <- 0..(height - 1),
         col <- 0..(width - 1),
-        direction <- [{0, 1}, {1, 0}, {1, 1}, {-1, 1}], # Right, Down, Diag Down-Right, Diag Up-Right
+        # Right, Down, Diag Down-Right, Diag Up-Right
+        direction <- [{0, 1}, {1, 0}, {1, 1}, {-1, 1}],
         check_word_at_position(rows, row, col, word, direction) or
-        check_word_at_position(rows, row, col, String.reverse(word), direction),
+          check_word_at_position(rows, row, col, String.reverse(word), direction),
         reduce: 0 do
       acc -> acc + 1
     end
@@ -123,7 +124,7 @@ defmodule WordMatrix do
 
   defp valid_x_pattern?(corners) do
     valid_diagonal?(corners.top_left, corners.bottom_right) and
-    valid_diagonal?(corners.top_right, corners.bottom_left)
+      valid_diagonal?(corners.top_right, corners.bottom_left)
   end
 
   defp valid_diagonal?(start, finish) do
@@ -141,12 +142,13 @@ defmodule WordMatrix do
 
     if end_row >= 0 and end_row < height and end_col >= 0 and end_col < width do
       # Get characters along direction
-      chars = for i <- 0..(word_length - 1) do
-        rows
-        |> Enum.at(row + i * dy)
-        |> Enum.at(col + i * dx)
-      end
-      |> Enum.join()
+      chars =
+        for i <- 0..(word_length - 1) do
+          rows
+          |> Enum.at(row + i * dy)
+          |> Enum.at(col + i * dx)
+        end
+        |> Enum.join()
 
       chars == word
     else
