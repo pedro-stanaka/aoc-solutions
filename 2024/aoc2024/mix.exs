@@ -30,7 +30,8 @@ defmodule Aoc2024.MixProject do
   # Define mix aliases
   defp aliases do
     [
-      aoc: "run -e 'Aoc2024.main(System.argv())'"
+      aoc: "run -e 'Aoc2024.main(System.argv())'",
+      lint: ["format", "credo"]
     ]
   end
 end
